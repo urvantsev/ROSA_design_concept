@@ -1,0 +1,96 @@
+\section{Task Management}
+\subsection{Data Structure}
+
+As a data structure for a task management an array of circular linked
+lists is used. Each index within the array represents a priority. Only
+12 priority levels are allowed for user's tasks:  from 0 to 11. Thus,
+the used array of circular linked lists contains 12 items. The item
+within the array is the circular linked list of tasks. A priority of the
+tasks equals to the index of the circular linked list stored these
+tasks.
+
+\begin{figure}[h]\centering\[\xymatrix{
+	P\!A_{11} \ar@/_/[d] 
+	& P\!A_{10} \ar@/_/[d] 
+	& \cdots 
+	& P\!A_{0} \ar@/_/[d] 
+	\\
+	\tau_{l} \ar@/^/[d] 
+	& \tau_{l\!f} \ar@(dl,dr) 
+	& 
+	& \tau_{l} \ar@/^/[d]
+	\\
+	\tau_{f} \ar@/^/@{-->}[u] 
+	& 
+	& 
+	& \tau_{f} \ar@/^/@{-->}[u]}\]
+  \caption{Data structure for a task management}\label{fig:tmds}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[h]{0.3\textwidth}
+		\[
+		  	\xymatrix{
+				\tau_1  \ar@/^/[r]
+				&\tau_2 \ar@/^/[ld] \\
+				\tau_3 \ar@/^/[u]}
+		\]
+		\caption{1st graph}\label{fig:1st_graph}
+	\end{subfigure}
+	~
+	\begin{subfigure}[h]{0.3\textwidth}
+		\[
+			\xymatrix{
+				\tau_1  \ar@/^/[r]
+				&\tau_2 \ar@/^/[ld] \\
+				\tau_3 \ar@/^/[u]}
+		\]
+		\caption{2nd graph}\label{fig:2nd_graph}
+	\end{subfigure}
+	\caption{Simple graphs}\label{fig:graphs}
+\end{figure}
+
+
+We define the data structure for the task management as a priority array
+of pointers to the circular queue of the tasks (we will denote it as
+"rQi", where "i" is a priority of the given queue). Each queue
+corresponded to the priority. Maximum number of tasks is 12, then
+possible priorities are from 1 to 12 (and 0 for IDLE task).
+
+Tasks with the same priorities are executed in a FIFO manner. During
+execution we move E and pAi to the next task in the rQi. rQi always
+points to the task, which is behind the executing task. If rQi is empty,
+then pAi = NULL.
+
+\begin{itemize}
+    \item pA - priority array;
+    \item pAi - pointer to the rQi (i-th element of the pA);
+    \item E - pointer to the running task.
+    \item Ti - i-th task.
+\end{itemize}
+
+\subsection{Insertion}
+
+In general, task can be inserted into the rQi in a two different ways.
+Insertion from rQi to rQi:
+
+Insertion can be done for O(1), because we need to insert the task just
+after *pAi due to FIFO execution.
+
+\subsection{Deletion}
+
+In general, task can be deleted in a several ways. Task deletes itself
+(can be done for O(1)):
+
+
+This deletion can be done for O(n) in the {\textbf{\textit{worst
+case}}}. Last case, rQi$\rightarrow$rQl last task deletion, can be done
+as in the "last task itself deletion" case, but without {\tt
+context\_restore()} in the end. Note that tasks can not be deleted when
+they hold a semaphore. To check this, the task needs to keep track of
+whether it has locked any semaphores. To this end, a counter field was
+added to the taskHandle structure, which counts the number of semaphores
+the task has locked.
+
+

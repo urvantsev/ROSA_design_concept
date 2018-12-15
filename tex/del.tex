@@ -1,0 +1,15 @@
+\section{Delays}
+For the implementation of delays, the system needs to
+keep track of tasks that are currently waiting to resume execution. In
+this system this will be done by a queue which is sorted by the wake up
+time of each task it contains, with the earliest deadline first. The
+next design choice is between a hardware timer and polling in the ISR
+which drives the system clock. With the first one we can simply set the
+timer to expire when the task with the earliest deadline needs to wake
+up, and handling the resulting interrupt by waking the task. However,
+this takes a valuable timer, of which there are only three. Therefore
+this approach will not be taken, and instead the ISR of the timer
+already in use will poll the first task in the queue every system tick
+(1ms) to see if the task needs to wake up yet.
+
+

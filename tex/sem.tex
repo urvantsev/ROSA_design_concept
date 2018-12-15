@@ -1,0 +1,17 @@
+\section{Semaphores}
+Semaphores are stored as follows in the system.
+
+Semaphores can't be deleted if locked. 
+    
+Due to the way the IPCP works, it is not necessary to store blocked
+tasks in a data structure separate from the structure for ready tasks.
+Since a blocked task can only be blocked by a task of equal (aka
+maximum) priority, running through the entire list in a FIFO way will
+make sure the semaphore is unlocked, allowing the task to execute
+normally. If the system is changed such that tasks of equal priority are
+ran in a Round Robin style, this will pose the problem again, requiring
+a change in the way blocked tasks are handled. In order to keep track of
+the maximum ceiling for the IPCP, all locked semaphores are stored in an
+unsorted list.
+
+
