@@ -1,0 +1,11 @@
+# ignore all logs
+*.log
+
+#igonre aux
+*.aux
+
+#ignore pdf
+*.pdf
+
+#ignore swp (if someone uses vim)
+*.swp
